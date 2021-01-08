@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="container">
+    <div class="row">
+       <div class= ".col-md-6.offset-md-3">
+        <form action="/" method ="POST" class="form-row d-block" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class=>
+                {% if form.title.errors %}
+                    {% for err_title in form.title.errors %} 
+                        <P> Title{{ err_title | escape }} </P>
+                    {% endfor %}
+                {% endif %}
+                {% if form.content.errors %}
+                    {% for err_content in form.content.errors %}
+                        <P> Content{{ err_content | escape }} </P>
+                    {% endfor %}
+                {% endif %}
+                {% if form.thumbnail.errors %}
+                    {% for err_thumbnail in form.thumbnail.errors %}
+                        <P> Thumbnail{{ err_thumbnail | escape }} </P>
+                    {% endfor %}
+                {% endif %}
+
+                {% if form.errors %}
+                    {% for errors in form.errors.non_field_errors %}
+                        <p>{{ errors |escape}}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+    
+                {% for f in form %}
+                <div class="form-group ">
+                    {{f.label_tag}}
+                    
+                    {{f}}
+                </div>
+                    
+                {% endfor %}
+                <div class="form-group">
+                    <input type="submit" class="btn-btn-primary" value="Add Post">
+                </div>
+            
+                
+            </form> 
+
+       </div>
+    
+
+    </div>
+</div>
+    
+        <div>
+            {% for row in rows %}
+                <h2>{{row.title}}</h2>
+                <p>{{ row.content}}
+                    <small>{{row.created_at}}</small>
+                </p>
+                <p>
+                    <img src="{% static row.thumbnail.url %}" width=150>
+                </p>
+                <p class="small">{{row.user.username}}</p>
+            {% endfor %}
+        </div>
+  
+    {% endblock %}
